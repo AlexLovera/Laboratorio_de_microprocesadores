@@ -128,13 +128,5 @@ void loop() {
     }
     
   }
-
-  //BUZZER, no es necesario si esto lo hago arriba cuando se deba activar
-  /*if (alarmOn) {
-    tone(buzzerPin, 50, 2000); // reproduce un tono de 1 kHz durante 2 segundos
-    noTone(buzzerPin); // detiene el tono del buzzer
-    alarmOn = false;
-  }*/
-  //
   sevseg.refreshDisplay();
 }
