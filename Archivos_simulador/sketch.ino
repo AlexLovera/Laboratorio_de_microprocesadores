@@ -31,6 +31,11 @@ float tensionAlarmaLocalMaxima = 44.0;
 //float tensionReal = leertensionReal();
 
 
+void IRAM_ATTR apagarLedConBotonInterrupcion(){
+    Serial.print("Boton presionado ");
+    digitalWrite(ledPin2, LOW);
+}
+
 void setup() {
   byte numDigits = 4;
   byte digitPins[] = {14, 15, 2, 5};
@@ -53,6 +58,7 @@ void setup() {
   //PULSADOR
   pinMode(ledPin, OUTPUT);
   pinMode(buttonPin, INPUT_PULLUP);
+attachInterrupt(buttonPin, apagarLedConBotonInterrupcion, FALLING);
 
   //BUZZER Inicializa los pines
   pinMode(buzzerPin, OUTPUT);
@@ -122,10 +128,10 @@ void loop() {
     
   }
   //PULSADOR
-  if (digitalRead(buttonPin) == HIGH) {
+  /*if (digitalRead(buttonPin) == HIGH) {
     Serial.print("Boton presionado ");
     digitalWrite(ledPin2, LOW); // Apaga el LED cuando el botón está presionado
-  }
+  }*/
 
   //BUZZER, no es necesario si esto lo hago arriba cuando se deba activar
   /*if (alarmOn) {
