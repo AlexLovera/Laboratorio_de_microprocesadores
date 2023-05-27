@@ -32,6 +32,7 @@ float tensionAlarmaLocalMaxima = 44.0;
 
 
 void IRAM_ATTR apagarLedConBotonInterrupcion(){
+    // se asume que el debouncing es aplicado por hardware.
     Serial.print("Boton presionado ");
     digitalWrite(ledPin2, LOW);
 }
@@ -58,7 +59,7 @@ void setup() {
   //PULSADOR
   pinMode(ledPin, OUTPUT);
   pinMode(buttonPin, INPUT_PULLUP);
-attachInterrupt(buttonPin, apagarLedConBotonInterrupcion, FALLING);
+  attachInterrupt(buttonPin, apagarLedConBotonInterrupcion, FALLING);
 
   //BUZZER Inicializa los pines
   pinMode(buzzerPin, OUTPUT);
@@ -127,11 +128,6 @@ void loop() {
     }
     
   }
-  //PULSADOR
-  /*if (digitalRead(buttonPin) == HIGH) {
-    Serial.print("Boton presionado ");
-    digitalWrite(ledPin2, LOW); // Apaga el LED cuando el botón está presionado
-  }*/
 
   //BUZZER, no es necesario si esto lo hago arriba cuando se deba activar
   /*if (alarmOn) {
