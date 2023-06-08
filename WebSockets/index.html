@@ -1,0 +1,349 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mobile First Design</title>
+  <style>
+    .accordion-item {
+      margin-bottom: 1rem;
+    }
+
+    .collapse {
+      display: none;
+    }
+
+    .collapse.show {
+      display: block;
+    }
+
+    .form-label {
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      width: calc(50% - 0.5rem);
+      margin-bottom: 1rem;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    /* Estilos adicionales para el diseño */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-row {
+      display: flex;
+      margin-right: -0.5rem;
+      margin-left: -0.5rem;
+      justify-content: space-between;
+    }
+
+    .accordion-header{
+      padding-bottom: 1rem;
+    }
+
+    /*Para led*/
+    .circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: gray;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .circle.on {
+      background-color: green;
+      box-shadow: 0 0 10px 5px rgba(0, 255, 0, 0.7);
+    }
+
+    .btn {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+
+    /*para display*/
+    .card {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+
+    /*"Modo oscuro"*/
+    .dark-mode {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .dark-mode .card {
+      background-color: #000; /* Cambia el color de fondo de la tarjeta a negro */
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /*seccion de alarma*/
+    .alarm-container {
+      background-color: #cccccc;
+      border: 2px solid #808080;
+      border-radius: 5px;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+    }
+
+    .alarm-text {
+      color: #808080;
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+      padding: 10px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .alarm-active {
+      background-color: #ffcccc;
+      color: #ff0000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Medidor de tension</h1>
+    <button onclick="toggleDarkMode()">Cambiar a Modo Oscuro</button>
+    <div class="card" id="card">1234</div>
+    
+    <div>    
+      <h4>LED Encendido</h4>
+      <div class="circle"></div>
+      <button class="btn" onclick="apagarLED()">Apagar LED</button>
+
+      <h1>Alarma de Tensión</h1>
+
+      <div class="alarm-container">
+        <div class="alarm-text" id="alarmText">Valores de tensión en límite externo</div>
+      </div>
+
+      <button onclick="toggleAlarm()">Activar/Desactivar Alarma</button>
+    </div>
+    
+    <div class="accordion">
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button" type="button">
+            Modo Tension instantanea
+          </button>
+          <button class="btn btn-primary" onclick="elegirModo(this)">Elegir Modo</button>
+        </div>
+
+        <div class="collapse">
+          <div class="accordion-body">
+            <div class="form-group">
+              <div class="form-row">
+                <label for="limiteInferiorTI" class="form-label">limiteInferior</label>
+                <input type="number" class="form-control" id="limiteInferiorTI" disabled maxlength="4">
+                <label for="limiteSuperiorTI" class="form-label">limiteSuperior</label>
+                <input type="number" class="form-control" id="limiteSuperiorTI" disabled maxlength="4">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-row">
+                <label for="limiteInferiorLedTI" class="form-label">limiteInferiorLed</label>
+                <input type="number" class="form-control" id="limiteInferiorLedTI" disabled maxlength="4">
+                <label for="limiteSuperiorLedTI" class="form-label">limiteSuperiorLed</label>
+                <input type="number" class="form-control" id="limiteSuperiorLedTI" disabled maxlength="4">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-row">
+                <label for="valorInferiorNormalTI" class="form-label">valorInferiorNormal </label>
+                <input type="number" class="form-control" id="valorInferiorNormalTI" disabled maxlength="4">
+                <label for="valorSuperiorNormalTI" class="form-label">valorSuperiorNormal</label>
+                <input type="number" class="form-control" id="valorSuperiorNormalTI" disabled maxlength="4">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <button class="accordion-button" type="button">
+            Modo Tension promedio
+          </button>
+          <button class="btn btn-primary" onclick="elegirModo(this)">Elegir Modo</button>
+      </div>
+        
+        <div class="collapse">
+          <div class="accordion-body">
+            <div class="form-group">
+              <div class="form-row">
+                <label for="limiteInferiorTP" class="form-label">limiteInferior</label>
+                <input type="number" class="form-control" id="limiteInferiorTP" disabled maxlength="4">
+                <label for="limiteSuperiorTP" class="form-label">limiteSuperior</label>
+                <input type="number" class="form-control" id="limiteSuperiorTP" disabled maxlength="4">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-row">
+                <label for="limiteInferiorLedTP" class="form-label">limiteInferiorLed</label>
+                <input type="number" class="form-control" id="limiteInferiorLedTP" disabled maxlength="4">
+                <label for="limiteSuperiorLedTP" class="form-label">limiteSuperiorLed</label>
+                <input type="number" class="form-control" id="limiteSuperiorLedTP" disabled maxlength="4">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-row">
+                <label for="valorInferiorNormalTP" class="form-label">valorInferiorNormal </label>
+                <input type="number" class="form-control" id="valorInferiorNormalTP" disabled maxlength="4">
+                <label for="valorSuperiorNormalTP" class="form-label">valorSuperiorNormal</label>
+                <input type="number" class="form-control" id="valorSuperiorNormalTP" disabled maxlength="4">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var accordionButtons = document.querySelectorAll(".accordion-button");
+      accordionButtons.forEach(function(button) {
+        button.addEventListener("click", function() {
+          toggleAccordion(this);
+        });
+      });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      document.body.classList.add("dark-mode"); // Agrega la clase "dark-mode" al body
+    });
+
+    function toggleAccordion(button) {
+      var accordionItem = button.parentNode.parentNode;
+      var collapse = accordionItem.querySelector(".collapse");
+      var isExpanded = collapse.classList.toggle("show");
+      
+      if (isExpanded) {
+        disableInputs(collapse);
+      } else {
+        enableInputs(collapse);
+      }
+    }
+
+    function disableInputs(collapse) {
+      var inputs = collapse.querySelectorAll(".form-control");
+      inputs.forEach(function(input) {
+        input.disabled = true;
+      });
+    }
+
+    function enableInputs(collapse) {
+      var inputs = collapse.querySelectorAll(".form-control");
+      inputs.forEach(function(input) {
+        input.disabled = false;
+      });
+    }
+
+    function elegirModo(button) {
+      var accordionItem = button.parentNode.parentNode;
+      var siblingItem = accordionItem.nextElementSibling || accordionItem.previousElementSibling;
+
+      if (siblingItem) {
+        var siblingCollapse = siblingItem.querySelector(".collapse");
+        disableInputs(siblingCollapse);
+        enableInputs(accordionItem.querySelector(".collapse"));
+      }
+    }
+
+    // para led
+    var circle = document.querySelector(".circle");
+
+    function encenderLED() {
+      circle.classList.add("on");
+      // Aquí puedes enviar una solicitud al servidor para encender el LED físico
+      // Puedes utilizar AJAX, Fetch, WebSocket u otras técnicas para realizar la solicitud al servidor
+    }
+
+    function apagarLED() {
+      circle.classList.remove("on");
+      // Aquí puedes enviar una solicitud al servidor para apagar el LED físico
+      // Puedes utilizar AJAX, Fetch, WebSocket u otras técnicas para realizar la solicitud al servidor
+    }
+
+    // Ejemplo de recepción del estado del LED desde el servidor
+    // Aquí, se asume que el servidor envía un mensaje de estado en formato JSON
+    // y se utiliza un valor booleano "ledEncendido" para indicar si el LED está encendido o apagado
+    function recibirEstadoLED(ledEncendido) {
+      if (ledEncendido) {
+        encenderLED();
+      } else {
+        apagarLED();
+      }
+    }
+
+    // Simulación de recepción del estado del LED desde el servidor después de 2 segundos
+    setTimeout(function() {
+      // Aquí se simula el estado del LED recibido desde el servidor
+      var ledEncendido = true; // Cambiar según el estado real del LED recibido desde el servidor
+      recibirEstadoLED(ledEncendido);
+    }, 2000);
+
+////////////////////////////////////////
+    // display 
+    var cards = document.querySelectorAll(".card");
+
+    // Ejemplo de actualización de valores numéricos después de 2 segundos
+    setTimeout(function() {
+      // Aquí se simulan los valores numéricos recibidos
+      var valores = [1234, 5678, 9012, 3456]; // Cambiar según los valores reales recibidos
+
+      // Actualiza los valores en cada tarjeta
+      for (var i = 0; i < cards.length; i++) {
+        cards[i].textContent = valores[i];
+      }
+    }, 2000);
+
+////////////////////////////////////////
+    // "modo oscuro"
+    function toggleDarkMode() {
+      var body = document.body;
+      var card = document.getElementById("card");
+      body.classList.toggle("dark-mode");
+      card.classList.toggle("dark-mode");
+    }
+
+////////////////////////////////////////
+    // alarma externa
+    function toggleAlarm() {
+      var alarmText = document.getElementById("alarmText");
+      alarmText.classList.toggle("alarm-active");
+    }
+  </script>
+</body>
+</html>
